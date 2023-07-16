@@ -1,0 +1,37 @@
+name: budget_countertops_dev
+services:
+  app:
+    env_file: env_vars.env
+    image: ${PROJECT_NAME}:dev
+    tty: true
+    init: true
+    links:
+      - "db"
+      - "redis"
+    expose:
+      - 3000
+    ports:
+      - 127.0.0.1:3000:3000
+    depends_on:
+      - db
+      - redis
+  db:
+    env_file: env_vars.env
+    image: mysql:${MYSQL_VERSION}
+    container_name: ${DB_CONTAINER_NAME}
+    volumes: 
+      - ${MYSQL_VOLUME}:/var/lib/mysql
+    expose:
+      - 3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    ports:
+      - 127.0.0.1:3306:3306
+  redis:
+    image: redis:latest
+    container_name: ${REDIS_CONTAINER_NAME}
+
+volumes:
+  budget_countertops_db:

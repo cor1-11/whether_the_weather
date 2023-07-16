@@ -1,0 +1,7 @@
+{
+  "name": "Budget Countertops",
+  "dockerComposeFile": "docker-compose.devcontainer.yml",
+  "service": "countertops",
+  "workspaceFolder": "/budget_countertops",
+  "shutdownAction": "stopCompose"
+}
