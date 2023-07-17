@@ -1,28 +1,36 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>Hello <%= @current_user.name || @current_user.ip %></h1>
-<div class="card">
-  <div class="card-body">
-    <% if @location.data_missing? %>
+
+<% if @location.data_missing? %>
+  <div class="card">
+    <div class="card-body">
       Sorry I can't seem to find where you are located
-    <% else %>
-      <%= turbo_frame_tag "location_#{@location.id}", src: location_path(@location), loading: :lazy %>
+    </div>
+  </div>
+<% else %>
+  <%= turbo_frame_tag "location_#{@location.id}", src: location_path(@location), loading: :lazy %>
+<% end %>
+
+<div id="locations" class="row">
+  <div class="col">
+    <% @locations.each do |loc| %>
+      <% set_weather_data(loc) %>
+      <%= turbo_frame_tag "location_#{loc.id}", src: location_path(id: loc.id), loading: :lazy %>
     <% end %>
   </div>
 </div>
 
-<div id="locations" class="row">
-  <div class="col">
-</div>
-
 <div class="row">
-<div class="col">
-  <%= link_to 'Add Location', new_location_path(), class: "btn btn-primary", data: { turbo_frame: 'location_form_dialog', controller: 'bootstrap--modal', action: 'bootstrap--modal#pop', 'bootstrap--modal-modal-id-value': '#locationModal' } %>
-</div>
+  <div class="col">
+    <%= link_to 'Add Location', new_location_path(), class: "btn btn-primary", data: { turbo_frame: 'location_form_dialog', controller: 'bootstrap--modal', action: 'bootstrap--modal#pop', 'bootstrap--modal-modal-id-value': '#locationModal' } %>
+  </div>
 </div>
 
 <div class="modal fade" id="locationModal" tabindex="-1">
   <div class="modal-dialog modal-fullscreen">
-    <%= turbo_frame_tag "location_form_dialog", scr: new_location_path  %>
+    <div class="modal-content">
+      <%= turbo_frame_tag "location_form_dialog", scr: new_location_path  %>
+    </div>
   </div>
 </div>

@@ -8,7 +8,7 @@ class WeatherData < ApplicationService
   end
 
   def call
-    return @forecast_data unless @latitude && @longitude
+    return @forecast_data unless @latitude.present? && @longitude.present?
 
     forecast_url = JSON.parse(RestClient.get("https://api.weather.gov/points/#{@latitude},#{@longitude}").body)['properties']['forecast']
     noaa_data = JSON.parse(RestClient.get(forecast_url).body)

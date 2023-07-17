@@ -1,17 +1,15 @@
 class LocationsController < ApplicationController
   before_action :set_location
+  helper_method :set_weather_data
 
   # GET /locations or /locations.json
   def index
-    @locations = Location.all
+    @locations = @current_user.other_locations
   end
 
   # GET /locations/1 or /locations/1.json
   def show
-    @weather_data = WeatherData.call(@location.latitude, @location.longitude).reject{ |d| d[:start_time].hour < 6 }
-    @weather_chart_data = {high: [], low: []}
-    @weather_data.map{ |w| @weather_chart_data[w[:high_low].to_sym] << {w[:start_time].to_date => w[:temp] } }
-    @weather_calendar_data = @weather_data.group_by{ |w| w[:start_time].to_date }
+    set_weather_data(@location)
   end
 
   # GET /locations/new
@@ -25,13 +23,19 @@ class LocationsController < ApplicationController
 
   # POST /locations or /locations.json
   def create
-    @location = Location.new(location_params)
+    @location = @current_user.locations.new(location_params)
 
-    respond_to do |format|
-      unless @location.save
-        render 'shared/error', object: @location
-      end
+    unless @location.save
+      render partial: '/shared/error', locals: {object: @location}
+      return
     end
+
+    if @location.zip.present?
+      @location.update(GeoLocate.call(@location.zip))
+    elsif @location.ip_address.present?
+      @location.update(GeoLocate.call(@location.ip_address))
+    end
+    set_weather_data(@location)
   end
 
   # PATCH/PUT /locations/1 or /locations/1.json
@@ -57,11 +61,18 @@ class LocationsController < ApplicationController
     end
   end
 
+  def set_weather_data(location)
+    @weather_data = WeatherData.call(location.latitude, location.longitude).reject{ |d| d[:start_time].hour < 6 }
+    @weather_chart_data = {high: [], low: []}
+    @weather_data.map{ |w| @weather_chart_data[w[:high_low].to_sym] << {w[:start_time].to_date => w[:temp] } }
+    @weather_calendar_data = @weather_data.group_by{ |w| w[:start_time].to_date }
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_location
       puts 'setting location'
-      return if @location = @current_user.primary_location
+      return if @location = Location.find(params[:id] || @current_user.primary_location.id)
 
       puts 'creating location'
   

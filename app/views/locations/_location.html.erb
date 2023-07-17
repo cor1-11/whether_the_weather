@@ -1,15 +1,29 @@
-<div class="row align-items-start">
-  <% @weather_calendar_data.each do |k,d| %>
-    <div class="col">
-      <div class="card">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><%= k %></li>
-          <% d.each do |t| %>
-            <li class="list-group-item"><%= t[:high_low] %>: <%= t[:temp].to_s + t[:temp_unit] %><br /><%= t[:condition] %></li>
-          <% end %>
-        </ul>
+<%= turbo_frame_tag "location_#{@location.id}" do %>
+  <div class="card">
+    <div class="card-body">
+      <div class="row align-items-start">
+        <% @weather_calendar_data.each do |k,d| %>
+          <div class="col">
+            <div class="card">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><%= k %></li>
+                <% d.each do |t| %>
+                  <li class="list-group-item"><%= t[:high_low] %>: <%= t[:temp].to_s + t[:temp_unit] %><br /><%= t[:condition] %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div>
+        <%= link_to "Edit this location", edit_location_path(@location), data: { turbo_frame: 'location_form_dialog', controller: 'bootstrap--modal', action: 'bootstrap--modal#pop', 'bootstrap--modal-modal-id-value': '#locationModal' }, class: 'btn btn-primary' %>
+
+        <% if !@location.primary %>
+          <%= button_to "Destroy this location", @location, method: :delete %>
+        <% end %>
       </div>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>
 <%#= line_chart @weather_chart_data %>

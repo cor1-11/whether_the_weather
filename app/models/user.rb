@@ -12,6 +12,6 @@ class User < ApplicationRecord
   end
 
   def other_locations
-    locations.find_by(primary: false)
+    locations.where(primary: false)
   end
 end
