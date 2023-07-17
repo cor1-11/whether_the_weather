@@ -1,62 +1,75 @@
-<%= form_with(model: location) do |form| %>
-  <% if location.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(location.errors.count, "error") %> prohibited this location from being saved:</h2>
-
-      <ul>
-        <% location.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+<%= turbo_frame_tag 'location_form_dialog' do %>    
+  <%= form_with(model: location) do |form| %>
+    <div class="modal-header">
+      <h5 class="modal-title">Modal title</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-  <% end %>
+    <div class="modal-body">
+      <% if location.errors.any? %>
+        <div style="color: red">
+          <h2><%= pluralize(location.errors.count, "error") %> prohibited this location from being saved:</h2>
+          <ul>
+            <% location.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-  <div>
-    <%= form.label :ip_address, style: "display: block" %>
-    <%= form.text_field :ip_address %>
-  </div>
+      <div>
+        <%= form.label :ip_address, style: "display: block" %>
+        <%= form.text_field :ip_address %>
+      </div>
 
-  <div>
-    <%= form.label :address_1, style: "display: block" %>
-    <%= form.text_field :address_1 %>
-  </div>
+      <div>
+        <%= form.label :address_1, style: "display: block" %>
+        <%= form.text_field :address_1 %>
+      </div>
 
-  <div>
-    <%= form.label :address_2, style: "display: block" %>
-    <%= form.text_field :address_2 %>
-  </div>
+      <div>
+        <%= form.label :address_2, style: "display: block" %>
+        <%= form.text_field :address_2 %>
+      </div>
 
-  <div>
-    <%= form.label :city, style: "display: block" %>
-    <%= form.text_field :city %>
-  </div>
+      <div>
+        <%= form.label :city, style: "display: block" %>
+        <%= form.text_field :city %>
+      </div>
 
-  <div>
-    <%= form.label :state, style: "display: block" %>
-    <%= form.text_field :state %>
-  </div>
+      <div>
+        <%= form.label :state, style: "display: block" %>
+        <%= form.text_field :state %>
+      </div>
 
-  <div>
-    <%= form.label :zip, style: "display: block" %>
-    <%= form.text_field :zip %>
-  </div>
+      <div>
+        <%= form.label :zip, style: "display: block" %>
+        <%= form.text_field :zip %>
+      </div>
 
-  <div>
-    <%= form.label :country, style: "display: block" %>
-    <%= form.text_field :country %>
-  </div>
+      <div>
+        <%= form.label :country, style: "display: block" %>
+        <%= form.text_field :country %>
+      </div>
 
-  <div>
-    <%= form.label :lattitude, style: "display: block" %>
-    <%= form.text_field :lattitude %>
-  </div>
+      <div>
+        <%= form.label :latitude, style: "display: block" %>
+        <%= form.text_field :latitude %>
+      </div>
 
-  <div>
-    <%= form.label :longitude, style: "display: block" %>
-    <%= form.text_field :longitude %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+      <div>
+        <%= form.label :longitude, style: "display: block" %>
+        <%= form.text_field :longitude %>
+      </div>
+      <% if !form.object.primary %>
+        <div>
+          <%= form.label :primary, style: "display: block" %>
+          <%= form.check_box :primary %>
+        </div>
+      <%end%>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <%= form.submit 'Save', class: 'btn btn-primary' %>
+    </div>
+  <%end%>
+<%end%>

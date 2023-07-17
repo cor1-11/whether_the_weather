@@ -28,12 +28,8 @@ class LocationsController < ApplicationController
     @location = Location.new(location_params)
 
     respond_to do |format|
-      if @location.save
-        format.html { redirect_to location_url(@location), notice: "Location was successfully created." }
-        format.json { render :show, status: :created, location: @location }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @location.errors, status: :unprocessable_entity }
+      unless @location.save
+        render 'shared/error', object: @location
       end
     end
   end
@@ -74,6 +70,6 @@ class LocationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def location_params
-      params.require(:location).permit(:ip_address, :address_1, :address_2, :city, :state, :zip, :country, :latitude, :longitude)
+      params.require(:location).permit(:ip_address, :address_1, :address_2, :city, :state, :zip, :country, :latitude, :longitude, :primary)
     end
 end

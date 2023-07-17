@@ -11,7 +11,18 @@
   </div>
 </div>
 
+<div id="locations" class="row">
+  <div class="col">
+</div>
 
-<div id="locations">
-  
+<div class="row">
+<div class="col">
+  <%= link_to 'Add Location', new_location_path(), class: "btn btn-primary", data: { turbo_frame: 'location_form_dialog', controller: 'bootstrap--modal', action: 'bootstrap--modal#pop', 'bootstrap--modal-modal-id-value': '#locationModal' } %>
+</div>
+</div>
+
+<div class="modal fade" id="locationModal" tabindex="-1">
+  <div class="modal-dialog modal-fullscreen">
+    <%= turbo_frame_tag "location_form_dialog", scr: new_location_path  %>
+  </div>
 </div>

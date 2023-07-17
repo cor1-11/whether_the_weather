@@ -2,7 +2,7 @@
  <%= render @location %>
 
 <div>
-  <%= button_to "Edit this location", edit_location_path(@location) %>
+  <%= link_to "Edit this location", edit_location_path(@location), data: { turbo_frame: 'location_form_dialog', controller: 'bootstrap--modal', action: 'bootstrap--modal#pop', 'bootstrap--modal-modal-id-value': '#locationModal' }, class: 'btn btn-primary' %>
 
   <% if !@location.primary %>
     <%= button_to "Destroy this location", @location, method: :delete %>
