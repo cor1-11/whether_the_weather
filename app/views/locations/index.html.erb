@@ -1,14 +1,17 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>Hello <%= @current_user.name || @current_user.ip %></h1>
-
-<div id="locations">
-  <% @locations.each do |location| %>
-    <%= render location %>
-    <p>
-      <%= link_to "Show this location", location %>
-    </p>
-  <% end %>
+<div class="card">
+  <div class="card-body">
+    <% if @location.data_missing? %>
+      Sorry I can't seem to find where you are located
+    <% else %>
+      <%= turbo_frame_tag "location_#{@location.id}", src: location_path(@location), loading: :lazy %>
+    <% end %>
+  </div>
 </div>
 
-<%= link_to "New location", new_location_path %>
+
+<div id="locations">
+  
+</div>

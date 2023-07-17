@@ -1,52 +1,15 @@
-<div id="<%= dom_id location %>">
-  <p>
-    <strong>User:</strong>
-    <%= location.user_id %>
-  </p>
-
-  <p>
-    <strong>Ip address:</strong>
-    <%= location.ip_address %>
-  </p>
-
-  <p>
-    <strong>Address 1:</strong>
-    <%= location.address_1 %>
-  </p>
-
-  <p>
-    <strong>Address 2:</strong>
-    <%= location.address_2 %>
-  </p>
-
-  <p>
-    <strong>City:</strong>
-    <%= location.city %>
-  </p>
-
-  <p>
-    <strong>State:</strong>
-    <%= location.state %>
-  </p>
-
-  <p>
-    <strong>Zip:</strong>
-    <%= location.zip %>
-  </p>
-
-  <p>
-    <strong>Country:</strong>
-    <%= location.country %>
-  </p>
-
-  <p>
-    <strong>Lattitude:</strong>
-    <%= location.lattitude %>
-  </p>
-
-  <p>
-    <strong>Longitude:</strong>
-    <%= location.longitude %>
-  </p>
-
+<div class="row align-items-start">
+  <% @weather_calendar_data.each do |k,d| %>
+    <div class="col">
+      <div class="card">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><%= k %></li>
+          <% d.each do |t| %>
+            <li class="list-group-item"><%= t[:high_low] %>: <%= t[:temp].to_s + t[:temp_unit] %><br /><%= t[:condition] %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
 </div>
+<%#= line_chart @weather_chart_data %>

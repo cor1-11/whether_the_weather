@@ -1,10 +1,11 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @location %>
+<%= turbo_frame_tag "location_#{@location.id}" do %>
+ <%= render @location %>
 
 <div>
-  <%= link_to "Edit this location", edit_location_path(@location) %> |
-  <%= link_to "Back to locations", locations_path %>
+  <%= button_to "Edit this location", edit_location_path(@location) %>
 
-  <%= button_to "Destroy this location", @location, method: :delete %>
+  <% if !@location.primary %>
+    <%= button_to "Destroy this location", @location, method: :delete %>
+  <% end %>
 </div>
+<% end %>

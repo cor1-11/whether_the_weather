@@ -10,4 +10,8 @@ class User < ApplicationRecord
   def primary_location
     locations.find_by(primary: true)
   end
+
+  def other_locations
+    locations.find_by(primary: false)
+  end
 end

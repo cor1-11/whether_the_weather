@@ -8,6 +8,10 @@ class LocationsController < ApplicationController
 
   # GET /locations/1 or /locations/1.json
   def show
+    @weather_data = WeatherData.call(@location.latitude, @location.longitude).reject{ |d| d[:start_time].hour < 6 }
+    @weather_chart_data = {high: [], low: []}
+    @weather_data.map{ |w| @weather_chart_data[w[:high_low].to_sym] << {w[:start_time].to_date => w[:temp] } }
+    @weather_calendar_data = @weather_data.group_by{ |w| w[:start_time].to_date }
   end
 
   # GET /locations/new
@@ -60,9 +64,12 @@ class LocationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_location
+      puts 'setting location'
       return if @location = @current_user.primary_location
+
+      puts 'creating location'
   
-      @location = Location.create(primary: true, latitude: @current_user.latitude, longitude: @current_user.longitude)
+      @location = Location.create(user: @current_user, primary: true, latitude: @current_user.latitude, longitude: @current_user.longitude)
     end
 
     # Only allow a list of trusted parameters through.
