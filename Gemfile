@@ -44,6 +44,9 @@ gem "bootsnap", require: false
 
 gem "bootstrap"
 
+gem 'geocoder', '~> 1.3', '>= 1.3.7'
+
+gem "rest-client"
 # Use Sass to process CSS
 # gem "sassc-rails"
 
