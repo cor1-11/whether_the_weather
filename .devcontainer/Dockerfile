@@ -1,6 +1,6 @@
 FROM ruby:alpine3.18
 
-RUN apk --update add g++ make python3 gcompat libstdc++ curl
+RUN apk --update add nodejs build-base make python3 gcompat libstdc++ curl postgresql-client postgresql-dev
 
 ENV INSTALL_PATH /whether_the_weather
 RUN mkdir -p $INSTALL_PATH
